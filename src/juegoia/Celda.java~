@@ -1,0 +1,20 @@
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Celda extends JComponent 
+                   implements Constantes {
+    //coordenada x e y
+    public int x;
+    public int y;
+    //constructor
+    public Celda(int x,int y) {
+        this.x=x;
+        this.y=y;
+    }
+    //metodo para dibujar celda
+    @Override
+    public void paintComponent(Graphics g) {  
+        g.drawRect(x,y,sizeCell,sizeCell);
+    }//fin del metodo paintConmponent
+   
+}
