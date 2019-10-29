@@ -68,8 +68,8 @@ public class Adversario extends TimerTask implements Constantes{
     }
     
      public boolean moverAdversarioArriba(){
-        if(this.adversario.y>LARGO_BORDE_VENTANA/2 && intersecta(this.adversario.x, this.adversario.y-PIXEL_CELDA)!=OBSTACULO){
-              
+        if(this.adversario.y>LARGO_BORDE_VENTANA/2 && intersecta(this.adversario.x, this.adversario.y-PIXEL_CELDA)!=OBSTACULO){              
+            this.adversario.direccion = ARRIBA;
             this.y = this.y - PIXEL_CELDA;
             this.adversario.y = this.adversario.y - PIXEL_CELDA;
             if(intersectaJugador())
@@ -83,6 +83,7 @@ public class Adversario extends TimerTask implements Constantes{
     }
     public boolean moverAdversarioAbajo(){
         if(this.adversario.y<LARGO_ESCENARIO - 5*LARGO_BORDE_VENTANA/2 && intersecta(this.adversario.x, this.adversario.y+PIXEL_CELDA)!=OBSTACULO){
+            this.adversario.direccion = ABAJO;
             this.y = this.y + PIXEL_CELDA;
             this.adversario.y = this.adversario.y + PIXEL_CELDA;
             if(intersectaJugador())
@@ -98,6 +99,7 @@ public class Adversario extends TimerTask implements Constantes{
     }
     public boolean moverAdversarioDerecha(){
         if(this.adversario.x<ANCHURA_ESCENARIO - 6*ANCHO_BORDE_VENTANA && intersecta(this.adversario.x+PIXEL_CELDA, this.adversario.y)!=OBSTACULO){
+            this.adversario.direccion = DERECHA;
             this.x = this.x + PIXEL_CELDA;
             this.adversario.x = this.adversario.x + PIXEL_CELDA;
             if(intersectaJugador())
@@ -112,6 +114,7 @@ public class Adversario extends TimerTask implements Constantes{
     }
     public boolean moverAdversarioIzquierda(){
         if(this.adversario.x>ANCHO_BORDE_VENTANA && intersecta(this.adversario.x-PIXEL_CELDA, this.adversario.y)!=OBSTACULO){
+            this.adversario.direccion = IZQUIERDA;
             this.x = this.x - PIXEL_CELDA;
             this.adversario.x = this.adversario.x - PIXEL_CELDA;
             if(intersectaJugador())

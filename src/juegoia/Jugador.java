@@ -26,16 +26,14 @@ import javax.swing.JOptionPane;
  */
 public class Jugador extends TimerTask implements Constantes {
 
-    //atributos
     public int x, y, direccion;
-    public int energy = 100, vida = 2;
+    public int vida = 3;
     public int puntaje = 0;
     public boolean borrar = false;
     public int xAnterior;
     public int yAnterior;
     public Escenario escenario;
     public char tipo;
-    //public BufferedImage jugador;
     public Celda jugador;
 
     public Jugador(int x, int y, Escenario escenario) throws IOException {
@@ -71,18 +69,12 @@ public class Jugador extends TimerTask implements Constantes {
     public boolean moverJugadorArriba() {
         if (y > LARGO_BORDE_VENTANA / 2 && intersecta(x, y - PIXEL_CELDA) != OBSTACULO) {
             this.jugador.direccion = ARRIBA;
-            y = y - PIXEL_CELDA;
-            energy = energy - 1;
-            this.jugador.y = this.jugador.y - PIXEL_CELDA;
-            //this.borrar = true;
-            
-            if(energy==0){
-                this.escenario.mostrarDerrota();  
-                System.exit(0);
-            }
+            y = y - PIXEL_CELDA; 
+            ver_si_ganaste();
+
             if (intersectaAdversario()) {
                 this.vida--;
-                if(vida==0 || energy==0){                    
+                if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
                     System.exit(0);
                 }
@@ -96,17 +88,11 @@ public class Jugador extends TimerTask implements Constantes {
     public boolean moverJugadorAbajo() {
         if (y < LARGO_ESCENARIO - 5 * LARGO_BORDE_VENTANA / 2 && intersecta(x, y + PIXEL_CELDA) != OBSTACULO) {
             y = y + PIXEL_CELDA;
-            energy = energy - 1;
             this.jugador.direccion = ABAJO;
-            this.jugador.y = this.jugador.y + PIXEL_CELDA;
-            
-            if(energy==0){
-                this.escenario.mostrarDerrota();  
-                System.exit(0);
-            }
+            ver_si_ganaste();
             if (intersectaAdversario()) {
                 this.vida--;
-                if(vida==0 || energy==0){                    
+                if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
                     System.exit(0);
                 }
@@ -123,20 +109,11 @@ public class Jugador extends TimerTask implements Constantes {
     public boolean moverJugadorDerecha() {
         if (x < ANCHURA_ESCENARIO - 3 * 2*ANCHO_BORDE_VENTANA && intersecta(x - 1 + PIXEL_CELDA, y) != OBSTACULO) {
             x = x + PIXEL_CELDA;
-            energy = energy - 1;
             this.jugador.direccion = DERECHA;
-            this.jugador.x = this.jugador.x + PIXEL_CELDA;
-            //this.borrar = true;  
-            
-            if(energy==0){
-                this.escenario.mostrarDerrota();  
-                System.exit(0);
-            }
-            
-                
+            ver_si_ganaste();        
             if (intersectaAdversario()) {
                 this.vida--;
-                if(vida==0 || energy==0){                    
+                if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
                     System.exit(0);
                 }
@@ -151,21 +128,12 @@ public class Jugador extends TimerTask implements Constantes {
     public boolean moverJugadorIzquierda() {
         if (x > ANCHO_BORDE_VENTANA && intersecta(x - 1 - PIXEL_CELDA, y) != OBSTACULO) {
             x = x - PIXEL_CELDA;
-            energy = energy - 1;
             this.jugador.direccion = IZQUIERDA;
-            this.jugador.x = this.jugador.x - PIXEL_CELDA;
-            
-            if(energy==0){
-                this.escenario.mostrarDerrota();  
-                System.exit(0);
-            }
-
+            ver_si_ganaste();
             if (intersectaAdversario()) {                
-                this.vida--;
-                
-                if(vida==0 || energy==0){  
-                    this.escenario.mostrarDerrota();               
-                                        
+                this.vida--;                
+                if(vida==0){  
+                    this.escenario.mostrarDerrota();                                  
                     System.exit(0);
                 }
             }
@@ -174,6 +142,13 @@ public class Jugador extends TimerTask implements Constantes {
         } else {
             return false;
         }
+    }
+    
+    public void ver_si_ganaste(){
+        if(puntaje==escenario.cantidadRecompensas){
+                    JOptionPane.showMessageDialog(escenario.lienzo, "Ganaste!");
+                    System.exit(0);
+                }
     }
 
     public void cambiarPosicion(int x, int y) {
@@ -185,7 +160,6 @@ public class Jugador extends TimerTask implements Constantes {
     /* método que dice si en el punto x, y hay un obstaculo o recompensa comestible 
     (si pasa esto último entonces se come la recompensa y suma al puntaje) */
     public int intersecta(int x, int y) {
-
         try {
             int tipo = this.escenario.celdas[(x - ANCHO_BORDE_VENTANA / 2) / PIXEL_CELDA][(y - LARGO_BORDE_VENTANA / 2) / PIXEL_CELDA].tipo;
 
@@ -195,13 +169,7 @@ public class Jugador extends TimerTask implements Constantes {
 
                 // hacemos desaparecer la recompensa
                 this.escenario.celdas[(x - ANCHO_BORDE_VENTANA / 2) / PIXEL_CELDA][(y - LARGO_BORDE_VENTANA / 2) / PIXEL_CELDA].comestible = false;
-                this.puntaje++;
-                if(puntaje==escenario.cantidadRecompensas){
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Ganaste!");
-                    System.exit(0);
-                }
-                    
-                this.borrar = true;
+                this.puntaje++; 
                 return RECOMPENSA;
             } else {
                 return 0;
@@ -209,13 +177,10 @@ public class Jugador extends TimerTask implements Constantes {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return 0;
-        //         
+        return 0;      
     }
 
-    // 
     public boolean intersectaAdversario() {
-
         try {
             int distanciaX, distanciaY;
             for (int i = 0; i < this.escenario.adversarios.length; i++) {
@@ -239,8 +204,7 @@ public class Jugador extends TimerTask implements Constantes {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
                     }
-    }
-    
+    }    
     
     @Override
     public void run(){

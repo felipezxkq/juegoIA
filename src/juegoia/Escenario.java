@@ -1,8 +1,11 @@
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import javax.swing.JComponent;
 import java.util.TimerTask;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 public class Escenario extends JComponent implements Constantes {
@@ -14,6 +17,7 @@ public class Escenario extends JComponent implements Constantes {
     public Lienzo lienzo;
     public Timer lanzadorTareas;    
     public int cantidadRecompensas = 0;
+    public Image fondo;
     
     int numeroCeldas = NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO;
     
@@ -24,6 +28,8 @@ public class Escenario extends JComponent implements Constantes {
        adversarios=new Adversario[NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO/10]; 
        lanzadorTareas=new Timer();
        
+       fondo = ImageIO.read(new File("src/juegoia/imagenes/fondo.png"));
+       
        //inicializar el array de celdas
        for(int i=0; i < NUMERO_CELDAS_ANCHO; i++)
           for ( int j=0 ; j <  NUMERO_CELDAS_LARGO ; j++) {              
@@ -31,7 +37,7 @@ public class Escenario extends JComponent implements Constantes {
               
               if(random<10 && i!=0 && j!=0) // 10% de las celdas son ocupadas por obstaculos
               {             
-                  celdas[i][j]=new Celda(this, i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2, OBSTACULO);
+                  celdas[i][j]=new Celda(this, i*PIXEL_CELDA + ANCHO_BORDE_VENTANA/2, j*PIXEL_CELDA + LARGO_BORDE_VENTANA/2, OBSTACULO);
               }
               else if(random<15 && i!=0 && j!=0){ // 5% de las celdas son ocupadas por adversarios
                   celdas[i][j]=new Celda(this, i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);         
@@ -58,7 +64,7 @@ public class Escenario extends JComponent implements Constantes {
     @Override
     public void update(Graphics g){
         
-       
+        g.drawImage(fondo,ANCHO_BORDE_VENTANA/2,LARGO_BORDE_VENTANA/2, null);
         for(int i=0; i < NUMERO_CELDAS_ANCHO ; i++) 
             for ( int j=0 ; j < NUMERO_CELDAS_LARGO; j++) 
               celdas[i][j].update(g);
