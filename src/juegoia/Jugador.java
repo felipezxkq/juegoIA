@@ -1,18 +1,11 @@
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /*
@@ -25,7 +18,6 @@ import javax.swing.JOptionPane;
  * @author Alumno
  */
 public class Jugador extends TimerTask implements Constantes {
-
     public int x, y, direccion;
     public int vida = 3;
     public int puntaje = 0;
@@ -35,6 +27,7 @@ public class Jugador extends TimerTask implements Constantes {
     public Escenario escenario;
     public char tipo;
     public Celda jugador;
+    public BusquedaAnchura inteligencia;
 
     public Jugador(int x, int y, Escenario escenario) throws IOException {
         this.x = x;
@@ -45,6 +38,7 @@ public class Jugador extends TimerTask implements Constantes {
         this.yAnterior = y;
         this.escenario = escenario;
         this.jugador = new Celda(this.escenario, x, y, JUGADOR);
+        inteligencia = new BusquedaAnchura(escenario);
     }
     
     // método para mover al jugador dependiendo de si hay o no obstáculos
@@ -61,7 +55,6 @@ public class Jugador extends TimerTask implements Constantes {
 
             case KeyEvent.VK_RIGHT:
                 return moverJugadorDerecha();
-
         }
         return true;
     }
@@ -97,7 +90,6 @@ public class Jugador extends TimerTask implements Constantes {
                     System.exit(0);
                 }
             }
-            //this.borrar = true;
 
             return true;
         } else {
@@ -118,7 +110,6 @@ public class Jugador extends TimerTask implements Constantes {
                     System.exit(0);
                 }
             }
-
             return true;
         } else {
             return false;
