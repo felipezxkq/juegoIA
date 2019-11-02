@@ -66,6 +66,8 @@ public class Jugador extends TimerTask implements Constantes {
             ver_si_ganaste();
 
             if (intersectaAdversario()) {
+                y = y + 2*PIXEL_CELDA;
+                this.jugador.direccion = ABAJO;
                 this.vida--;
                 if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
@@ -84,6 +86,8 @@ public class Jugador extends TimerTask implements Constantes {
             this.jugador.direccion = ABAJO;
             ver_si_ganaste();
             if (intersectaAdversario()) {
+                y = y - 2*PIXEL_CELDA;
+                this.jugador.direccion = ARRIBA;
                 this.vida--;
                 if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
@@ -104,6 +108,8 @@ public class Jugador extends TimerTask implements Constantes {
             this.jugador.direccion = DERECHA;
             ver_si_ganaste();        
             if (intersectaAdversario()) {
+                x = x - 2*PIXEL_CELDA;
+                this.jugador.direccion = IZQUIERDA;
                 this.vida--;
                 if(vida==0){                    
                     JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
@@ -121,7 +127,9 @@ public class Jugador extends TimerTask implements Constantes {
             x = x - PIXEL_CELDA;
             this.jugador.direccion = IZQUIERDA;
             ver_si_ganaste();
-            if (intersectaAdversario()) {                
+            if (intersectaAdversario()) { 
+                x = x + 2*PIXEL_CELDA;
+                this.jugador.direccion = DERECHA;
                 this.vida--;                
                 if(vida==0){  
                     this.escenario.mostrarDerrota();                                  

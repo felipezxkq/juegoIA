@@ -58,9 +58,9 @@ public class Escenario extends JComponent implements Constantes {
           }
        
        this.jugador = new Jugador(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, this);
-       this.jugador.inteligencia.buscar(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, PIXEL_CELDA*3+1+ANCHO_BORDE_VENTANA/2, 3*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);
-       this.jugador.inteligencia.calcularRuta();
-       lanzadorTareas.scheduleAtFixedRate(jugador.inteligencia, 0, 1000);
+       //this.jugador.inteligencia.buscar(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, PIXEL_CELDA*3+1+ANCHO_BORDE_VENTANA/2, 3*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);
+       //this.jugador.inteligencia.calcularRuta();
+       //lanzadorTareas.scheduleAtFixedRate(jugador.inteligencia, 0, 1000);
              
     }
     
