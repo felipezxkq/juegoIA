@@ -22,6 +22,9 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
     public Estado temp;
     public boolean exito;
     
+    // Atributos para búsqueda multiobjetivo
+    
+    
     public BusquedaAnchura(Escenario escenario){
         this.escenario = escenario;
         colaEstados = new ArrayList<>();

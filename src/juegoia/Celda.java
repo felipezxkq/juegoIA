@@ -51,7 +51,7 @@ public class Celda extends JComponent implements Constantes {
                 break;
             case JUGADOR:
                 this.direccion = DERECHA;
-                imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_derecha.jpg"));             
+                imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_derecha.png"));             
                 break;
             case OBSTACULO:
                 int random = (int) (Math.random() * 5);
@@ -131,13 +131,13 @@ public class Celda extends JComponent implements Constantes {
             try {
                 switch (this.direccion) {
                     case ARRIBA:
-                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_arriba.jpg"));
+                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_arriba.png"));
                         break;
                     case ABAJO:
-                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_abajo.jpg"));
+                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_abajo.png"));
                         break;
                     case IZQUIERDA:
-                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_izquierda.jpg"));
+                        imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_izquierda.png"));
                         break;
                     default:
                         imagen = ImageIO.read(new File("src/juegoia/imagenes/canguro_derecha.png"));
