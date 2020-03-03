@@ -30,7 +30,7 @@ public class Lienzo extends Canvas implements Constantes{
                 
                 // si el jugador se movio repintamos
                 if(escenario.jugador.moverJugador(e)){                    
-                    repaint();                   
+                    repaint();      
                 }
             }        
         });
@@ -73,6 +73,7 @@ public class Lienzo extends Canvas implements Constantes{
         
         escenario.update(graficoBuffer);
         g.drawImage(imagenBuffer, 0, 0, null);
+        escenario.jugador.ver_si_ganaste();
     }
     
     //metodo paint para pintar el escnario

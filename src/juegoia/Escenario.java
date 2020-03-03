@@ -8,8 +8,7 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-public class Escenario extends JComponent implements Constantes {
-    
+public class Escenario extends JComponent implements Constantes {    
     public Celda[][] celdas;
     public Adversario[]adversarios;
     int k = 0; // inciar numero de adversarios
@@ -21,8 +20,7 @@ public class Escenario extends JComponent implements Constantes {
     
     int numeroCeldas = NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO;
     
-    public Escenario(Lienzo lienzo) throws IOException {
-        
+    public Escenario(Lienzo lienzo) throws IOException {        
        this.lienzo = lienzo;        
        celdas=new Celda[NUMERO_CELDAS_ANCHO][NUMERO_CELDAS_LARGO];
        adversarios=new Adversario[NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO/10]; 
@@ -43,7 +41,7 @@ public class Escenario extends JComponent implements Constantes {
                   celdas[i][j]=new Celda(this, i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);         
                   adversarios[k] = new Adversario(i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2, this);
                   int movAdversario = (int) (Math.random() * 3) + 1;    
-                  lanzadorTareas.scheduleAtFixedRate(adversarios[k], 0, 500*movAdversario);
+                  lanzadorTareas.scheduleAtFixedRate(adversarios[k], 0, 1000*movAdversario);
                   k++;
               }
               else if(random<20 && i!=0 && j!=0) // 5% de las celdas son ocupadas por recompensas
@@ -57,11 +55,7 @@ public class Escenario extends JComponent implements Constantes {
               }
           }
        
-       this.jugador = new Jugador(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, this);
-       //this.jugador.inteligencia.buscar(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, PIXEL_CELDA*3+1+ANCHO_BORDE_VENTANA/2, 3*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);
-       //this.jugador.inteligencia.calcularRuta();
-       //lanzadorTareas.scheduleAtFixedRate(jugador.inteligencia, 0, 1000);
-             
+       this.jugador = new Jugador(1+ANCHO_BORDE_VENTANA/2, LARGO_BORDE_VENTANA/2, this); // es importante que el jugador sea creado al final            
     }
     
     @Override
@@ -82,6 +76,12 @@ public class Escenario extends JComponent implements Constantes {
     public void mostrarDerrota(){
         JOptionPane.showMessageDialog(lienzo, "Perdiste!");
     }
+    
+    public void comenzarBuscaquedaAnchura(){
+        this.jugador.inteligencia.anadirDestinos();
+        this.lanzadorTareas.scheduleAtFixedRate(jugador.inteligencia, 0, 500); 
+    }
+  
     
     @Override
     public void paintComponent(Graphics g) {      

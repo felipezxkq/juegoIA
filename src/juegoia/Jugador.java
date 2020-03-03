@@ -38,7 +38,7 @@ public class Jugador extends TimerTask implements Constantes {
         this.yAnterior = y;
         this.escenario = escenario;
         this.jugador = new Celda(this.escenario, x, y, JUGADOR);
-        inteligencia = new BusquedaAnchura(escenario);
+        inteligencia = new BusquedaAnchura(this.escenario, this);
     }
     
     // método para mover al jugador dependiendo de si hay o no obstáculos
@@ -55,6 +55,8 @@ public class Jugador extends TimerTask implements Constantes {
 
             case KeyEvent.VK_RIGHT:
                 return moverJugadorDerecha();
+            case KeyEvent.VK_ENTER:
+                this.escenario.comenzarBuscaquedaAnchura();
         }
         return true;
     }
@@ -63,7 +65,7 @@ public class Jugador extends TimerTask implements Constantes {
         if (y > LARGO_BORDE_VENTANA / 2 && intersecta(x, y - PIXEL_CELDA) != OBSTACULO) {
             this.jugador.direccion = ARRIBA;
             y = y - PIXEL_CELDA; 
-            ver_si_ganaste();
+            //ver_si_ganaste();
 
             if (intersectaAdversario()) {
                 y = y + 2*PIXEL_CELDA;
@@ -84,7 +86,7 @@ public class Jugador extends TimerTask implements Constantes {
         if (y < LARGO_ESCENARIO - 5 * LARGO_BORDE_VENTANA / 2 && intersecta(x, y + PIXEL_CELDA) != OBSTACULO) {
             y = y + PIXEL_CELDA;
             this.jugador.direccion = ABAJO;
-            ver_si_ganaste();
+            //ver_si_ganaste();
             if (intersectaAdversario()) {
                 y = y - 2*PIXEL_CELDA;
                 this.jugador.direccion = ARRIBA;
@@ -106,7 +108,7 @@ public class Jugador extends TimerTask implements Constantes {
         if (x < ANCHURA_ESCENARIO - 3 * 2*ANCHO_BORDE_VENTANA && intersecta(x - 1 + PIXEL_CELDA, y) != OBSTACULO) {
             x = x + PIXEL_CELDA;
             this.jugador.direccion = DERECHA;
-            ver_si_ganaste();        
+            //ver_si_ganaste();        
             if (intersectaAdversario()) {
                 x = x - 2*PIXEL_CELDA;
                 this.jugador.direccion = IZQUIERDA;
@@ -126,7 +128,7 @@ public class Jugador extends TimerTask implements Constantes {
         if (x > ANCHO_BORDE_VENTANA && intersecta(x - 1 - PIXEL_CELDA, y) != OBSTACULO) {
             x = x - PIXEL_CELDA;
             this.jugador.direccion = IZQUIERDA;
-            ver_si_ganaste();
+            //ver_si_ganaste();
             if (intersectaAdversario()) { 
                 x = x + 2*PIXEL_CELDA;
                 this.jugador.direccion = DERECHA;

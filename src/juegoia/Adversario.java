@@ -21,8 +21,6 @@ import javax.swing.JComponent;
  * @author Alumno
  */
 public class Adversario extends TimerTask implements Constantes{
-    
- 
     //atributos
     public int x;
     public int y;
@@ -38,12 +36,11 @@ public class Adversario extends TimerTask implements Constantes{
     }
     
     public void moverAdversario(){
-        
         // primero decide si moverse o no
         int random = (int) (Math.random() * 2) + 1;
         
         if(random==1){ // si sale 1, se mueve
-            random = (int) (Math.random() * 4) + 1;
+            random = (int) (Math.random() * 4) + 1;  // 4 opciones de movimiento
             switch(random){
                 case 1:
                     moverAdversarioArriba();
@@ -59,21 +56,22 @@ public class Adversario extends TimerTask implements Constantes{
                     break;
             }
             
-        }else{
-            
-        }      
+        }    
         if(adversario.x>0){
             
         }
     }
     
      public boolean moverAdversarioArriba(){
-        if(this.adversario.y>LARGO_BORDE_VENTANA/2 && intersecta(this.adversario.x, this.adversario.y-PIXEL_CELDA)!=OBSTACULO){              
+        if(this.adversario.y>LARGO_BORDE_VENTANA/2 && noIntersecta(this.adversario.x, this.adversario.y-PIXEL_CELDA)){              
             this.adversario.direccion = ARRIBA;
             this.y = this.y - PIXEL_CELDA;
             this.adversario.y = this.adversario.y - PIXEL_CELDA;
-            if(intersectaJugador())
+            if(intersectaJugador()){
                 this.escenario.jugador.vida--;
+                this.escenario.jugador.moverJugadorArriba();
+            }
+                
             //this.borrar = true;            
             return true;
         }
@@ -82,28 +80,32 @@ public class Adversario extends TimerTask implements Constantes{
         }
     }
     public boolean moverAdversarioAbajo(){
-        if(this.adversario.y<LARGO_ESCENARIO - 5*LARGO_BORDE_VENTANA/2 && intersecta(this.adversario.x, this.adversario.y+PIXEL_CELDA)!=OBSTACULO){
+        if(this.adversario.y<LARGO_ESCENARIO - 5*LARGO_BORDE_VENTANA/2 && noIntersecta(this.adversario.x, this.adversario.y+PIXEL_CELDA)){
             this.adversario.direccion = ABAJO;
             this.y = this.y + PIXEL_CELDA;
             this.adversario.y = this.adversario.y + PIXEL_CELDA;
-            if(intersectaJugador())
+            if(intersectaJugador()){
                 this.escenario.jugador.vida--;
+                this.escenario.jugador.moverJugadorAbajo();
+            }                
             //this.borrar = true;
                         
         return true;
         }
         else{
-            
             return false;
         }
     }
     public boolean moverAdversarioDerecha(){
-        if(this.adversario.x<ANCHURA_ESCENARIO - 6*ANCHO_BORDE_VENTANA && intersecta(this.adversario.x+PIXEL_CELDA, this.adversario.y)!=OBSTACULO){
+        if(this.adversario.x<ANCHURA_ESCENARIO - 6*ANCHO_BORDE_VENTANA && noIntersecta(this.adversario.x+PIXEL_CELDA, this.adversario.y)){
             this.adversario.direccion = DERECHA;
             this.x = this.x + PIXEL_CELDA;
             this.adversario.x = this.adversario.x + PIXEL_CELDA;
             if(intersectaJugador())
+            {
                 this.escenario.jugador.vida--;
+                this.escenario.jugador.moverJugadorDerecha();
+            }
            //this.borrar = true;          
           
         return true;
@@ -113,12 +115,15 @@ public class Adversario extends TimerTask implements Constantes{
         }      
     }
     public boolean moverAdversarioIzquierda(){
-        if(this.adversario.x>ANCHO_BORDE_VENTANA && intersecta(this.adversario.x-PIXEL_CELDA, this.adversario.y)!=OBSTACULO){
+        if(this.adversario.x>ANCHO_BORDE_VENTANA && noIntersecta(this.adversario.x-PIXEL_CELDA, this.adversario.y)){
             this.adversario.direccion = IZQUIERDA;
             this.x = this.x - PIXEL_CELDA;
             this.adversario.x = this.adversario.x - PIXEL_CELDA;
-            if(intersectaJugador())
+            if(intersectaJugador()){
                 this.escenario.jugador.vida--;
+                this.escenario.jugador.moverJugadorIzquierda();
+            }
+             
             //this.borrar = true;            
            
         return true;
@@ -128,31 +133,24 @@ public class Adversario extends TimerTask implements Constantes{
         }
     }  
     
-    /* método que dice si en el punto x, y hay un obstaculo o recompensa comestible 
-    (si pasa esto último entonces se come la recompensa y suma al puntaje) */
-    public int intersecta(int x, int y){       
-        
-        try{
-        int tipo = this.escenario.celdas[(x - ANCHO_BORDE_VENTANA/2)/PIXEL_CELDA][(y - LARGO_BORDE_VENTANA/2)/PIXEL_CELDA].tipo;
-        
-        if(tipo==OBSTACULO){
-            return OBSTACULO;
-        }
-        else{
-            return 0;
-        }            
-        }catch(Exception e){
+    // Se fija en que el adversario no intersecte ni obstáculos ni recompensas
+    public boolean noIntersecta(int x, int y) {
+        try {
+            int tipo = this.escenario.celdas[(x +1 - ANCHO_BORDE_VENTANA/2) / PIXEL_CELDA][(y - LARGO_BORDE_VENTANA / 2) / PIXEL_CELDA].tipo;
+            System.out.println("TIPO: "+tipo);
+            if (tipo == OBSTACULO || tipo == RECOMPENSA) {
+                return false;
+            }
+            
+        } catch (Exception e) {
             System.out.println(e);
         }     
-        return 0;        
-        //         
+        return true;
     }
     
     public boolean intersectaJugador() {
-
         try {
             int distanciaX, distanciaY;
-            
             distanciaX = abs(this.escenario.jugador.x - this.x);
             distanciaY = abs(this.escenario.jugador.y - this.y);
             if (distanciaX < 5 && distanciaY < 5) {
