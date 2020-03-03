@@ -65,16 +65,11 @@ public class Jugador extends TimerTask implements Constantes {
         if (y > LARGO_BORDE_VENTANA / 2 && intersecta(x, y - PIXEL_CELDA) != OBSTACULO) {
             this.jugador.direccion = ARRIBA;
             y = y - PIXEL_CELDA; 
-            //ver_si_ganaste();
 
             if (intersectaAdversario()) {
-                y = y + 2*PIXEL_CELDA;
-                this.jugador.direccion = ABAJO;
+                moverJugadorAbajo();
+                moverJugadorAbajo();
                 this.vida--;
-                if(vida==0){                    
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
-                    System.exit(0);
-                }
             }
             return true;
         } else {
@@ -86,15 +81,11 @@ public class Jugador extends TimerTask implements Constantes {
         if (y < LARGO_ESCENARIO - 5 * LARGO_BORDE_VENTANA / 2 && intersecta(x, y + PIXEL_CELDA) != OBSTACULO) {
             y = y + PIXEL_CELDA;
             this.jugador.direccion = ABAJO;
-            //ver_si_ganaste();
+            
             if (intersectaAdversario()) {
-                y = y - 2*PIXEL_CELDA;
-                this.jugador.direccion = ARRIBA;
+                moverJugadorArriba();
+                moverJugadorArriba();
                 this.vida--;
-                if(vida==0){                    
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
-                    System.exit(0);
-                }
             }
 
             return true;
@@ -108,15 +99,11 @@ public class Jugador extends TimerTask implements Constantes {
         if (x < ANCHURA_ESCENARIO - 3 * 2*ANCHO_BORDE_VENTANA && intersecta(x - 1 + PIXEL_CELDA, y) != OBSTACULO) {
             x = x + PIXEL_CELDA;
             this.jugador.direccion = DERECHA;
-            //ver_si_ganaste();        
+                    
             if (intersectaAdversario()) {
-                x = x - 2*PIXEL_CELDA;
-                this.jugador.direccion = IZQUIERDA;
+                moverJugadorIzquierda();
+                moverJugadorIzquierda();
                 this.vida--;
-                if(vida==0){                    
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste!");
-                    System.exit(0);
-                }
             }
             return true;
         } else {
@@ -128,15 +115,11 @@ public class Jugador extends TimerTask implements Constantes {
         if (x > ANCHO_BORDE_VENTANA && intersecta(x - 1 - PIXEL_CELDA, y) != OBSTACULO) {
             x = x - PIXEL_CELDA;
             this.jugador.direccion = IZQUIERDA;
-            //ver_si_ganaste();
+            
             if (intersectaAdversario()) { 
-                x = x + 2*PIXEL_CELDA;
-                this.jugador.direccion = DERECHA;
-                this.vida--;                
-                if(vida==0){  
-                    this.escenario.mostrarDerrota();                                  
-                    System.exit(0);
-                }
+                moverJugadorDerecha();
+                moverJugadorDerecha();
+                this.vida--;              
             }
 
             return true;
@@ -147,7 +130,16 @@ public class Jugador extends TimerTask implements Constantes {
     
     public void ver_si_ganaste(){
         if(puntaje==escenario.cantidadRecompensas){
+                    this.escenario.lanzadorTareas.cancel();
                     JOptionPane.showMessageDialog(escenario.lienzo, "Ganaste!");
+                    System.exit(0);
+                }
+    }
+    
+    public void ver_si_perdiste(){
+        if(vida==0){
+                    this.escenario.lanzadorTareas.cancel();
+                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste, tu puntaje fue: "+puntaje);
                     System.exit(0);
                 }
     }

@@ -225,7 +225,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
     public void anadirDestinos(){
         for(int i=0; i<NUMERO_CELDAS_ANCHO; i++){
             for(int j=0; j<NUMERO_CELDAS_LARGO; j++){
-                if(this.escenario.celdas[i][j].tipo == RECOMPENSA){
+                if(this.escenario.celdas[i][j].tipo == RECOMPENSA && this.escenario.celdas[i][j].comestible){
                     int x_recompensa = this.escenario.celdas[i][j].x+1;
                     int y_recompensa = this.escenario.celdas[i][j].y;
                     System.out.println("Objetivo: (x, y) = " + x_recompensa + ", " + y_recompensa);

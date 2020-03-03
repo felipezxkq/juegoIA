@@ -17,7 +17,7 @@ public class Lienzo extends Canvas implements Constantes{
     
     public Lienzo() throws IOException{
         escenario=new Escenario(this);
-        this.setBackground(Color.orange);
+        this.setBackground(Color.WHITE);
         this.setSize(ANCHURA_ESCENARIO,LARGO_ESCENARIO);
        
         addKeyListener(new java.awt.event.KeyAdapter(){            
@@ -74,6 +74,7 @@ public class Lienzo extends Canvas implements Constantes{
         escenario.update(graficoBuffer);
         g.drawImage(imagenBuffer, 0, 0, null);
         escenario.jugador.ver_si_ganaste();
+        escenario.jugador.ver_si_perdiste();
     }
     
     //metodo paint para pintar el escnario

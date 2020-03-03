@@ -26,7 +26,12 @@ public class Escenario extends JComponent implements Constantes {
        adversarios=new Adversario[NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO/10]; 
        lanzadorTareas=new Timer();
        
-       fondo = ImageIO.read(new File("src/juegoia/imagenes/fondo.png"));
+       if(ANCHURA_ESCENARIO > 1500){
+           fondo = ImageIO.read(new File("src/juegoia/imagenes/fondo2.png"));
+       }else{
+           fondo = ImageIO.read(new File("src/juegoia/imagenes/fondo.png"));
+       }
+       
        
        //inicializar el array de celdas
        for(int i=0; i < NUMERO_CELDAS_ANCHO; i++)

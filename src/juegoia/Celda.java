@@ -149,7 +149,7 @@ public class Celda extends JComponent implements Constantes {
             
             g.drawImage(imagen, this.escenario.jugador.x, this.escenario.jugador.y, null);
             
-        g.setColor(Color.BLUE);
+        g.setColor(Color.BLACK);
         g.setFont(new Font("ComicSans", Font.BOLD, 18));
         g.drawString("Vidas: " + this.escenario.jugador.vida, ANCHO_BORDE_VENTANA, LARGO_BORDE_VENTANA / 3); // vidas
         g.drawString("Puntaje: " + this.escenario.jugador.puntaje, ANCHO_BORDE_VENTANA + 2*PIXEL_CELDA, LARGO_BORDE_VENTANA / 3); // puntaje
