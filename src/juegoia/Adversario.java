@@ -26,6 +26,7 @@ public class Adversario extends TimerTask implements Constantes{
     public int y;
     public Escenario escenario;
     public Celda adversario;
+    public BusquedaAnchuraAdversario inteligencia_adversario;
 
     //constructor, inicializa los atributos
     public Adversario(int x,int y, Escenario escenario) throws IOException {
@@ -36,27 +37,7 @@ public class Adversario extends TimerTask implements Constantes{
     }
     
     public void moverAdversario(){
-        // primero decide si moverse o no
-        int random = (int) (Math.random() * 2) + 1;
-        
-        if(random==1){ // si sale 1, se mueve
-            random = (int) (Math.random() * 4) + 1;  // 4 opciones de movimiento
-            switch(random){
-                case 1:
-                    moverAdversarioArriba();
-                    break;
-                case 2:
-                    moverAdversarioAbajo();
-                    break;
-                case 3:
-                    moverAdversarioIzquierda();
-                    break;
-                case 4:
-                    moverAdversarioDerecha();
-                    break;
-            }
-            
-        }    
+        // primero decide si moverse o no 
         if(adversario.x>0){
             
         }
@@ -169,6 +150,12 @@ public class Adversario extends TimerTask implements Constantes{
         moverAdversario(); 
         escenario.lienzo.repaint();
         
+    }
+    
+    @Override
+    public boolean equals(Object x){
+        Adversario e = (Adversario)x;
+        return this.x==e.x && this.y==e.y;
     }
     
 }

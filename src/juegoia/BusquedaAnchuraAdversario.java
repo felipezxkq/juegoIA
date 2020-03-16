@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -12,7 +13,7 @@ import java.util.TimerTask;
  *
  * @author Felipe
  */
-public class BusquedaAnchura extends TimerTask implements Constantes {
+public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
     public Escenario escenario;
     public ArrayList<Estado> colaEstados;
     public ArrayList<Estado> historial;
@@ -24,11 +25,11 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
     public boolean exito;
     
     // Atributos para búsqueda multiobjetivo
-    public Jugador jugador;
+    public Adversario adversario;
     public ArrayList<Estado> destinos;
     public boolean parar;
     
-    public BusquedaAnchura(Escenario escenario, Jugador jugador){
+    public BusquedaAnchuraAdversario(Escenario escenario, Adversario adversario){
         this.escenario = escenario;
         colaEstados = new ArrayList<>();
         historial = new ArrayList<>();
@@ -36,8 +37,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
         index_pasos = 0;
         exito = false;
         
-        this.jugador = jugador;
-        System.out.println("PRESENTEEE: "+this.jugador.direccion);
+        this.adversario = adversario;
         destinos = new ArrayList<>();
         parar = false;
         //encontrarUbicacionRecompensas();
@@ -48,6 +48,8 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
         colaEstados.add(inicial);
         historial.add(inicial);
         this.objetivo = objetivo;
+        System.out.println("Objetivo: "+objetivo);
+        System.out.println("Estoy: "+ inicial);
         exito = false;
         
         if(inicial.equals(objetivo)){
@@ -70,7 +72,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
         } 
         else{
             System.out.println("La ruta no pudo calcularse");
-            return true;
+            return false;
         }
     }
 
@@ -144,10 +146,10 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
             boolean resultado;
             
             do{                
-                subinicial = new Estado(jugador.x, jugador.y, 'N', null);
+                subinicial = new Estado(adversario.x, adversario.y, 'N', null);
+                destinos.add(0, new Estado(this.escenario.jugador.x-1, this.escenario.jugador.y, 'N', null));
                 subobjetivo = destinos.get(0);
-                
-                resultado = this.buscar(subinicial, subobjetivo);              
+                resultado = this.buscar(subinicial, subobjetivo);   
                 
                 
                 if(subinicial.equals(subobjetivo)){
@@ -163,10 +165,10 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
             if( pasos.size() > 1){
                 System.out.println("CANTIDAD PASOS: "+pasos.size());
                 switch(pasos.get(1)) {
-                case 'D': escenario.jugador.moverJugadorAbajo();break;
-                case 'U': escenario.jugador.moverJugadorArriba(); break;
-                case 'R': escenario.jugador.moverJugadorDerecha();break;
-                case 'L': escenario.jugador.moverJugadorIzquierda();break;
+                case 'D': this.adversario.moverAdversarioAbajo();break;
+                case 'U': this.adversario.moverAdversarioArriba(); break;
+                case 'R': this.adversario.moverAdversarioDerecha();break;
+                case 'L': this.adversario.moverAdversarioIzquierda();break;
                 }
                 escenario.lienzo.repaint();
             }
@@ -188,7 +190,6 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
     public boolean noIntersecta(int x, int y) {
         try {
             int tipo = this.escenario.celdas[(x +1 - ANCHO_BORDE_VENTANA/2) / PIXEL_CELDA][(y - LARGO_BORDE_VENTANA / 2) / PIXEL_CELDA].tipo;
-            System.out.println("TIPO: "+tipo);
             if (tipo == OBSTACULO) {
                 return false;
             } 
@@ -207,16 +208,18 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
         try {
             Integer distanciaX, distanciaY;
             for (int i=0; i<this.escenario.adversarios_length; i++) {
-                
-                distanciaX = Math.abs(this.escenario.adversarios[i].x - x);
-                distanciaY = Math.abs(this.escenario.adversarios[i].y - y);
-                if ( (distanciaX < 5 && distanciaY < 5) ) {
-                    return true;
-                }                
+                if(this.adversario != this.escenario.adversarios[i]){
+                    distanciaX = Math.abs(this.escenario.adversarios[i].x - x);
+                    distanciaY = Math.abs(this.escenario.adversarios[i].y - y);
+
+                    if ( (distanciaX < 5 && distanciaY < 5) ) {
+                        return true;
+                    }  
+                }                             
             }
             return false;
         } catch (Exception e) {
-            System.out.println("Problema al calcular ruta sin intersectar adversarios");
+            System.out.println("Problema al calcular ruta para adversarios sin intersectar adversarios");
             System.out.println(e);
         } 
         return false;      
