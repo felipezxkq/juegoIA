@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -7,6 +8,7 @@ import javax.swing.JComponent;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import juegoia.Tiempo;
 
 public class Escenario extends JComponent implements Constantes {    
     public Celda[][] celdas;
@@ -18,6 +20,7 @@ public class Escenario extends JComponent implements Constantes {
     public Timer lanzadorTareas;    
     public int cantidadRecompensas = 0;
     public Image fondo;
+    public Tiempo tiempo;
     
     int numeroCeldas = NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO;
     
@@ -26,6 +29,8 @@ public class Escenario extends JComponent implements Constantes {
        celdas=new Celda[NUMERO_CELDAS_ANCHO][NUMERO_CELDAS_LARGO];
        adversarios=new Adversario[NUMERO_CELDAS_ANCHO*NUMERO_CELDAS_ANCHO/10]; 
        lanzadorTareas=new Timer();
+       tiempo = new Tiempo();
+       this.lanzadorTareas.scheduleAtFixedRate(tiempo, 0, 1000);
        
        if(ANCHURA_ESCENARIO > 1500){
            fondo = ImageIO.read(new File("src/juegoia/imagenes/fondo2.png"));
@@ -39,11 +44,11 @@ public class Escenario extends JComponent implements Constantes {
           for ( int j=0 ; j <  NUMERO_CELDAS_LARGO ; j++) {              
               int random = (int) (Math.random() * 100) + 1;
               
-              if(random<11 && i!=0 && j!=0) // 10% de las celdas son ocupadas por obstaculos
+              if(random<10 && i!=0 && j!=0) // 10% de las celdas son ocupadas por obstaculos
               {             
                   celdas[i][j]=new Celda(this, i*PIXEL_CELDA + ANCHO_BORDE_VENTANA/2, j*PIXEL_CELDA + LARGO_BORDE_VENTANA/2, OBSTACULO);
               }
-              else if(random<14 && i!=0 && j!=0){ // 5% de las celdas son ocupadas por adversarios
+              else if(random<13 && i!=0 && j!=0){ // 5% de las celdas son ocupadas por adversarios
                   celdas[i][j]=new Celda(this, i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2);         
                   adversarios[k] = new Adversario(i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2, this);
                   int movAdversario = (int) (Math.random() * 3) + 1;    
@@ -51,7 +56,7 @@ public class Escenario extends JComponent implements Constantes {
                   k++;
                   adversarios_length++;
               }
-              else if(random<20 && i!=0 && j!=0) // 5% de las celdas son ocupadas por recompensas
+              else if(random<17 && i!=0 && j!=0) // 5% de las celdas son ocupadas por recompensas
               {             
                   celdas[i][j]=new Celda(this, i*PIXEL_CELDA+ANCHO_BORDE_VENTANA/2,j*PIXEL_CELDA+LARGO_BORDE_VENTANA/2, RECOMPENSA);
                   cantidadRecompensas++;
@@ -78,6 +83,9 @@ public class Escenario extends JComponent implements Constantes {
             adversarios[i].adversario.update(g);
         }
         jugador.jugador.update(g);
+        g.setFont(new Font("ComicSans", Font.BOLD, 18));
+        g.drawString("Tiempo: " + tiempo, ANCHURA_ESCENARIO - 4*PIXEL_CELDA, LARGO_BORDE_VENTANA / 3); // puntaje
+
         
     }
     

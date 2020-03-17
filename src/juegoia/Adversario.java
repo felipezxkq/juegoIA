@@ -50,7 +50,9 @@ public class Adversario extends TimerTask implements Constantes{
             this.adversario.y = this.adversario.y - PIXEL_CELDA;
             if(intersectaJugador()){
                 this.escenario.jugador.vida--;
-                this.escenario.jugador.moverJugadorArriba();
+                if(!this.escenario.jugador.moverJugadorArriba()){
+                    this.escenario.jugador.moverJugadorEnOtraDireccion();
+                }
             }
                 
             //this.borrar = true;            
@@ -67,7 +69,9 @@ public class Adversario extends TimerTask implements Constantes{
             this.adversario.y = this.adversario.y + PIXEL_CELDA;
             if(intersectaJugador()){
                 this.escenario.jugador.vida--;
-                this.escenario.jugador.moverJugadorAbajo();
+                if(!this.escenario.jugador.moverJugadorAbajo()){
+                    this.escenario.jugador.moverJugadorEnOtraDireccion();
+                }
             }                
             //this.borrar = true;
                         
@@ -85,7 +89,9 @@ public class Adversario extends TimerTask implements Constantes{
             if(intersectaJugador())
             {
                 this.escenario.jugador.vida--;
-                this.escenario.jugador.moverJugadorDerecha();
+                if(!this.escenario.jugador.moverJugadorDerecha()){
+                    this.escenario.jugador.moverJugadorEnOtraDireccion();
+                }                
             }
            //this.borrar = true;          
           
@@ -102,7 +108,10 @@ public class Adversario extends TimerTask implements Constantes{
             this.adversario.x = this.adversario.x - PIXEL_CELDA;
             if(intersectaJugador()){
                 this.escenario.jugador.vida--;
-                this.escenario.jugador.moverJugadorIzquierda();
+                if(!this.escenario.jugador.moverJugadorIzquierda()){                    
+                    this.escenario.jugador.moverJugadorEnOtraDireccion();
+                }
+                
             }
              
             //this.borrar = true;            
@@ -118,7 +127,6 @@ public class Adversario extends TimerTask implements Constantes{
     public boolean noIntersecta(int x, int y) {
         try {
             int tipo = this.escenario.celdas[(x +1 - ANCHO_BORDE_VENTANA/2) / PIXEL_CELDA][(y - LARGO_BORDE_VENTANA / 2) / PIXEL_CELDA].tipo;
-            System.out.println("TIPO: "+tipo);
             if (tipo == OBSTACULO || tipo == RECOMPENSA) {
                 return false;
             }

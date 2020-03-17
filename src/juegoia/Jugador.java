@@ -121,25 +121,41 @@ public class Jugador extends TimerTask implements Constantes {
                 moverJugadorDerecha();
                 this.vida--;              
             }
-
             return true;
         } else {
             return false;
+        }
+    }    
+    
+    public void moverJugadorEnOtraDireccion(){
+        boolean bandera = false;
+        if(moverJugadorIzquierda()){
+            return;
+        }
+        if(moverJugadorDerecha()){
+            return;
+        }
+        if(moverJugadorArriba()){
+            return;
+        }
+        if(moverJugadorAbajo()){
+            return;
         }
     }
     
     public void ver_si_ganaste(){
         if(puntaje==escenario.cantidadRecompensas){
                     this.escenario.lanzadorTareas.cancel();
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Ganaste!");
+                    JOptionPane.showMessageDialog(escenario.lienzo, "Ganaste! y te demoraste: "+this.escenario.tiempo+" segundos");
                     System.exit(0);
                 }
     }
     
     public void ver_si_perdiste(){
-        if(vida==0){
+        if(vida<=0){
                     this.escenario.lanzadorTareas.cancel();
-                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste, tu puntaje fue: "+puntaje);
+                    JOptionPane.showMessageDialog(escenario.lienzo, "Perdiste, tu puntaje fue: "+puntaje
+                    + " y duraste: "+this.escenario.tiempo+" segundos");
                     System.exit(0);
                 }
     }

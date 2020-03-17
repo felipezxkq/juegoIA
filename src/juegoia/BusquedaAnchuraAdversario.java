@@ -48,8 +48,6 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
         colaEstados.add(inicial);
         historial.add(inicial);
         this.objetivo = objetivo;
-        System.out.println("Objetivo: "+objetivo);
-        System.out.println("Estoy: "+ inicial);
         exito = false;
         
         if(inicial.equals(objetivo)){
@@ -67,7 +65,6 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
         }
         if(exito){            
             this.calcularRuta();
-            System.out.println("Ruta calculada, yendo hacia: " + objetivo);
             return true;
         } 
         else{
@@ -151,10 +148,7 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
                 subobjetivo = destinos.get(0);
                 resultado = this.buscar(subinicial, subobjetivo);   
                 
-                
-                if(subinicial.equals(subobjetivo)){
-                    destinos.remove(subobjetivo);
-                }
+            
                 
                 if(destinos.isEmpty()){
                     System.out.println("Se acabó a donde ir");
@@ -163,7 +157,6 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
             }while(!resultado && !destinos.isEmpty());
             
             if( pasos.size() > 1){
-                System.out.println("CANTIDAD PASOS: "+pasos.size());
                 switch(pasos.get(1)) {
                 case 'D': this.adversario.moverAdversarioAbajo();break;
                 case 'U': this.adversario.moverAdversarioArriba(); break;
@@ -177,7 +170,6 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
     
     public void calcularRuta(){
         Estado predecesor = objetivo;
-        System.out.println("Estado predecesor: " + predecesor.toString());
         
         do{
             pasos.add(0, predecesor.operacion);
@@ -232,7 +224,6 @@ public class BusquedaAnchuraAdversario extends TimerTask implements Constantes {
                 if(this.escenario.celdas[i][j].tipo == RECOMPENSA && this.escenario.celdas[i][j].comestible){
                     int x_recompensa = this.escenario.celdas[i][j].x+1;
                     int y_recompensa = this.escenario.celdas[i][j].y;
-                    System.out.println("Objetivo: (x, y) = " + x_recompensa + ", " + y_recompensa);
                                            
                     this.destinos.add(new Estado(x_recompensa, y_recompensa, 'N', null));                   
                     
